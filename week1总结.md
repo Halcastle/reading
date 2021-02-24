@@ -48,6 +48,314 @@
 
  //TODO ByteCodeAnalysis.java编译字节码
 
+```java
+public class ByteCodeAnalysis {
+
+    /*Java基本数据类型:
+        六种数字类型（四个整数型，两个浮点型）
+        一种字符型
+        一种布尔型
+        byte：
+            八位有符号的，以二进制补码表示的整数
+            最小值：-128（-2^7）
+            最大值：127（2^7-1）
+            默认值为0
+            byte类型用在大型数组中节约空间，主要代替整数，因为byte变量占用的空间只有int类型的四分之一
+        short：
+            十六位有符号的，以二进制补码表示的整数
+            最小值是：-32768（-2^15）
+            最大值是：32767(2^15-1)
+            short类型是int类型的1/2
+        int:
+            三十二位有符号的，以二进制补码表示的整数
+            最小值是：-2147483648（-2^32）
+            最大值是：2147483647（2^32-1）
+            一般地整数型变量默认为int类型
+            默认值是0
+        long：
+            六十四位有符号的，以二进制补码表示的整数；
+            最小值是：-9223372036854775808（-2^63）
+            最大值是：9223372036854775807（2^63 -1）
+        float:
+            三十二位，单精度，符合IEEE754标准的浮点数
+            float在存储大型浮点数组的时候可以节省内存空间；
+            默认值是0.0f；
+            浮点数不能用来表示精确的值，如货币
+        double：
+            六十四位，双精度，符合IEEE754标准的浮点数
+            浮点数的默认类型为double型
+            double型同样不能表示精确的值，如货币
+            默认值为0.0d
+        boolean：
+            boolean数据类型表示一位的信息
+            只有两个取值：true和false
+            默认值为false
+        char：
+            char类型为一个单一的16为Unicode字符
+            最小值：\u0000(即为0)
+            最大值:\uffff(即为65、535)
+            char数据类型可以存储任何字符
+
+     */
+    static final byte b_a = 100;
+    static final byte b_b = -1;
+
+    static final short s_a = 10;
+    static final short s_b = -5;
+
+    static int i_a = 11;
+    static int i_b = -12;
+
+    static long l_a = 200;
+    static long l_b = -200;
+
+    static float f_a = -10.5f;
+    static float f_b = 10.1f;
+
+    static double d_a = 17.12;
+    static double d_b = -11.22;
+
+    static boolean is_a = false;
+    static boolean is_b = true;
+
+    static final char c_a = 'A';
+    static final char c_b = 'c';
+
+
+    public static void main(String[] args){
+        //byte四则运算
+        byte b_result_addition = b_a + b_b ;
+        byte b_result_subtraction = b_a - b_b;
+        byte b_result_multiplication = b_a * b_b;
+        byte b_result_division = b_a / b_b;
+
+        //short四则运算
+        short s_result_addition = s_a + s_b;
+        short s_result_subtraction = s_a - s_b;
+        short s_result_multiplication = s_a * s_b;
+        short s_result_division = s_a / s_b;
+
+        //int四则运算
+        int i_result_addition = i_a + i_b;
+        int i_result_subtraction = i_a - i_b;
+        int i_result_multiplication = i_a * i_b;
+        int i_result_division = i_a / i_b;
+
+        //long四则运算
+        long l_result_addition= l_a + l_b;
+        long l_result_subtraction = l_a - l_b;
+        long l_result_multipication = l_a * l_b;
+        long l_result_division = l_a / l_b;
+
+        //float四则运算
+        float f_result_addition = f_a + f_b;
+        float f_result_subtraction = f_a - f_b;
+        float f_result_multipication = f_a * f_b;
+        float f_result_division = f_a / f_b;
+
+        //double四则运算
+        double d_result_addition = d_a + d_b;
+        double d_result_subtraction = d_a - d_b;
+        double d_result_multipication = d_a * d_b;
+        double d_result_division = d_a / d_b;
+
+        //char四则运算
+        char c_result_addition = c_a + c_b;
+        char c_resullt_subtraction = c_b - c_a;
+        char c_result_multipication = c_a * c_b;
+        char c_result_division = c_a / c_b;
+
+        //if运算
+        if(i_a>i_b){
+            is_a = true;
+        }
+
+        //for运算
+        for(int i = 0;i<10;i++){
+            i_a += i_b;
+        }
+
+
+    }
+}
+```
+
+```C
+ javap -c .\ByteCodeAnalysis.class
+Compiled from "ByteCodeAnalysis.java"
+public class ByteCodeAnalysis {
+  static final byte b_a;
+
+  static final byte b_b;
+
+  static final short s_a;
+
+  static final short s_b;
+
+  static int i_a;
+
+  static int i_b;
+
+  static long l_a;
+
+  static long l_b;
+
+  static float f_a;
+
+  static float f_b;
+
+  static double d_a;
+
+  static double d_b;
+
+  static boolean is_a;
+
+  static boolean is_b;
+
+  static final char c_a;
+
+  static final char c_b;
+
+  public ByteCodeAnalysis();
+    Code:
+       0: aload_0  //将位置为0的对象引用局部变量压入栈
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: bipush        99  //将byte类型的数99转换为int类型的数，然后压入栈
+       2: istore_1  //从栈中弹出int类型值，然后将其存到位置为1的局部变量中
+       3: bipush        101
+       5: istore_2
+       6: bipush        -100
+       8: istore_3
+       9: bipush        -100
+      11: istore        4
+      13: iconst_5
+      14: istore        5
+      16: bipush        15
+      18: istore        6
+      20: bipush        -50
+      22: istore        7
+      24: bipush        -2
+      26: istore        8
+      28: getstatic     #3                  // Field i_a:I
+      31: getstatic     #4                  // Field i_b:I
+      34: iadd
+      35: istore        9
+      37: getstatic     #3                  // Field i_a:I
+      40: getstatic     #4                  // Field i_b:I
+      43: isub
+      44: istore        10
+      46: getstatic     #3                  // Field i_a:I
+      49: getstatic     #4                  // Field i_b:I
+      52: imul
+      53: istore        11
+      55: getstatic     #3                  // Field i_a:I
+      58: getstatic     #4                  // Field i_b:I
+      61: idiv
+      62: istore        12
+      64: getstatic     #5                  // Field l_a:J
+      67: getstatic     #6                  // Field l_b:J
+      70: ladd
+      71: lstore        13
+      73: getstatic     #5                  // Field l_a:J
+      76: getstatic     #6                  // Field l_b:J
+      79: lsub
+      80: lstore        15
+      82: getstatic     #5                  // Field l_a:J
+      85: getstatic     #6                  // Field l_b:J
+      88: lmul
+      89: lstore        17
+      91: getstatic     #5                  // Field l_a:J
+      94: getstatic     #6                  // Field l_b:J
+      97: ldiv
+      98: lstore        19
+     100: getstatic     #7                  // Field f_a:F
+     103: getstatic     #8                  // Field f_b:F
+     106: fadd
+     107: fstore        21
+     109: getstatic     #7                  // Field f_a:F
+     112: getstatic     #8                  // Field f_b:F
+     115: fsub
+     116: fstore        22
+     118: getstatic     #7                  // Field f_a:F
+     121: getstatic     #8                  // Field f_b:F
+     124: fmul
+     125: fstore        23
+     127: getstatic     #7                  // Field f_a:F
+     130: getstatic     #8                  // Field f_b:F
+     133: fdiv
+     134: fstore        24
+     136: getstatic     #9                  // Field d_a:D
+     139: getstatic     #10                 // Field d_b:D
+     142: dadd
+     143: dstore        25
+     145: getstatic     #9                  // Field d_a:D
+     148: getstatic     #10                 // Field d_b:D
+     151: dsub
+     152: dstore        27
+     154: getstatic     #9                  // Field d_a:D
+     157: getstatic     #10                 // Field d_b:D
+     160: dmul
+     161: dstore        29
+     163: getstatic     #9                  // Field d_a:D
+     166: getstatic     #10                 // Field d_b:D
+     169: ddiv
+     170: dstore        31
+     172: sipush        164
+     175: istore        33
+     177: bipush        34
+     179: istore        34
+     181: sipush        6435
+     184: istore        35
+     186: iconst_0
+     187: istore        36
+     189: getstatic     #3                  // Field i_a:I
+     192: getstatic     #4                  // Field i_b:I
+     195: if_icmple     202
+     198: iconst_1
+     199: putstatic     #11                 // Field is_a:Z
+     202: iconst_0
+     203: istore        37
+     205: iload         37
+     207: bipush        10
+     209: if_icmpge     228
+     212: getstatic     #3                  // Field i_a:I
+     215: getstatic     #4                  // Field i_b:I
+     218: iadd
+     219: putstatic     #3                  // Field i_a:I
+     222: iinc          37, 1
+     225: goto          205
+     228: return
+
+  static {};
+    Code:
+       0: bipush        11
+       2: putstatic     #3                  // Field i_a:I
+       5: bipush        -12
+       7: putstatic     #4                  // Field i_b:I
+      10: ldc2_w        #12                 // long 200l
+      13: putstatic     #5                  // Field l_a:J
+      16: ldc2_w        #14                 // long -200l
+      19: putstatic     #6                  // Field l_b:J
+      22: ldc           #16                 // float -10.5f
+      24: putstatic     #7                  // Field f_a:F
+      27: ldc           #17                 // float 10.1f
+      29: putstatic     #8                  // Field f_b:F
+      32: ldc2_w        #18                 // double 17.12d
+      35: putstatic     #9                  // Field d_a:D
+      38: ldc2_w        #20                 // double -11.22d
+      41: putstatic     #10                 // Field d_b:D
+      44: iconst_0
+      45: putstatic     #11                 // Field is_a:Z
+      48: iconst_1
+      49: putstatic     #22                 // Field is_b:Z
+      52: return
+}
+```
+
 
 
 ##  字节码的运行时结构
