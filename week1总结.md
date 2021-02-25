@@ -97,262 +97,579 @@ public class ByteCodeAnalysis {
             char数据类型可以存储任何字符
 
      */
-    static final byte b_a = 100;
-    static final byte b_b = -1;
 
-    static final short s_a = 10;
-    static final short s_b = -5;
-
-    static int i_a = 11;
-    static int i_b = -12;
-
-    static long l_a = 200;
-    static long l_b = -200;
-
-    static float f_a = -10.5f;
-    static float f_b = 10.1f;
-
-    static double d_a = 17.12;
-    static double d_b = -11.22;
-
-    static boolean is_a = false;
-    static boolean is_b = true;
-
-    static final char c_a = 'A';
-    static final char c_b = 'c';
 
 
     public static void main(String[] args){
+         final byte b_a = 100;
+         final byte b_b = -1;
+
+         final short s_a = 10;
+         final short s_b = -5;
+
+         int i_a = 11;
+         int i_b = -12;
+
+         long l_a = 200;
+         long l_b = -200;
+
+         float f_a = -10.5f;
+         float f_b = 10.1f;
+
+         double d_a = 17.12;
+         double d_b = -11.22;
+
+         boolean is_a = false;
+         boolean is_b = true;
+
+         final char c_a = 'A';
+         final char c_b = 'c';
         //byte四则运算
         byte b_result_addition = b_a + b_b ;
         byte b_result_subtraction = b_a - b_b;
         byte b_result_multiplication = b_a * b_b;
         byte b_result_division = b_a / b_b;
+        System.out.println("b_result_addition: "+b_result_addition);
+        System.out.println("b_result_subtraction: "+b_result_subtraction);
+        System.out.println("b_result_multiplication: "+b_result_multiplication);
+        System.out.println("b_result_division: "+b_result_division);
 
         //short四则运算
         short s_result_addition = s_a + s_b;
         short s_result_subtraction = s_a - s_b;
         short s_result_multiplication = s_a * s_b;
         short s_result_division = s_a / s_b;
+        System.out.println("s_result_addition: "+s_result_addition);
+        System.out.println("s_result_subtraction: "+s_result_subtraction);
+        System.out.println("s_result_multiplication: "+s_result_multiplication);
+        System.out.println("s_result_division: "+s_result_division);
 
         //int四则运算
         int i_result_addition = i_a + i_b;
         int i_result_subtraction = i_a - i_b;
         int i_result_multiplication = i_a * i_b;
         int i_result_division = i_a / i_b;
+        System.out.println("i_result_addition: "+i_result_addition);
+        System.out.println("i_result_subtraction: "+i_result_subtraction);
+        System.out.println("i_result_multiplication: "+i_result_multiplication);
+        System.out.println("i_result_division: "+i_result_division);
 
         //long四则运算
         long l_result_addition= l_a + l_b;
         long l_result_subtraction = l_a - l_b;
         long l_result_multipication = l_a * l_b;
         long l_result_division = l_a / l_b;
+        System.out.println("l_result_addition: "+l_result_addition);
+        System.out.println("l_result_subtraction: "+l_result_subtraction);
+        System.out.println("l_result_multipication: "+l_result_multipication);
+        System.out.println("l_result_division: "+l_result_division);
+
 
         //float四则运算
         float f_result_addition = f_a + f_b;
         float f_result_subtraction = f_a - f_b;
         float f_result_multipication = f_a * f_b;
         float f_result_division = f_a / f_b;
+        System.out.println("f_result_addition: "+f_result_addition);
+        System.out.println("f_result_subtraction: "+f_result_subtraction);
+        System.out.println("f_result_multipication: "+f_result_multipication);
+        System.out.println("f_result_division: "+f_result_division);
 
         //double四则运算
         double d_result_addition = d_a + d_b;
         double d_result_subtraction = d_a - d_b;
         double d_result_multipication = d_a * d_b;
         double d_result_division = d_a / d_b;
+        System.out.println("d_result_addition: "+d_result_addition);
+        System.out.println("d_result_subtraction: "+d_result_subtraction);
+        System.out.println("d_result_multipication: "+d_result_multipication);
+        System.out.println("d_result_division: "+d_result_division);
+
 
         //char四则运算
         char c_result_addition = c_a + c_b;
         char c_resullt_subtraction = c_b - c_a;
         char c_result_multipication = c_a * c_b;
         char c_result_division = c_a / c_b;
+        System.out.println("c_result_addition: "+c_result_addition);
+        System.out.println("c_resullt_subtraction: "+c_resullt_subtraction);
+        System.out.println("c_result_multipication: "+c_result_multipication);
+        System.out.println("c_result_division: "+c_result_division);
+
 
         //if运算
         if(i_a>i_b){
             is_a = true;
+            System.out.println("is_a: "+is_a);
         }
 
         //for运算
         for(int i = 0;i<10;i++){
             i_a += i_b;
+            System.out.println("i_a: "+i_a);
         }
 
 
     }
 }
+
 ```
 
 ```C
  javap -c .\ByteCodeAnalysis.class
 Compiled from "ByteCodeAnalysis.java"
 public class ByteCodeAnalysis {
-  static final byte b_a;
-
-  static final byte b_b;
-
-  static final short s_a;
-
-  static final short s_b;
-
-  static int i_a;
-
-  static int i_b;
-
-  static long l_a;
-
-  static long l_b;
-
-  static float f_a;
-
-  static float f_b;
-
-  static double d_a;
-
-  static double d_b;
-
-  static boolean is_a;
-
-  static boolean is_b;
-
-  static final char c_a;
-
-  static final char c_b;
-
   public ByteCodeAnalysis();
     Code:
-       0: aload_0  //将位置为0的对象引用局部变量压入栈
-       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       0: aload_0  //从局部变量0中装载引用类型值入栈
+       1: invokespecial #1  /*编译时方法绑定调用方法,用来调用构造函数，但也可以用于调用同一个类中的 private 方法, 以及
+可见的超类方法*/                  // Method java/lang/Object."<init>":()V
        4: return
 
   public static void main(java.lang.String[]);
     Code:
-       0: bipush        99  //将byte类型的数99转换为int类型的数，然后压入栈
-       2: istore_1  //从栈中弹出int类型值，然后将其存到位置为1的局部变量中
-       3: bipush        101
-       5: istore_2
-       6: bipush        -100
-       8: istore_3
-       9: bipush        -100
-      11: istore        4
-      13: iconst_5
-      14: istore        5
-      16: bipush        15
-      18: istore        6
-      20: bipush        -50
-      22: istore        7
-      24: bipush        -2
-      26: istore        8
-      28: getstatic     #3                  // Field i_a:I
-      31: getstatic     #4                  // Field i_b:I
-      34: iadd
-      35: istore        9
-      37: getstatic     #3                  // Field i_a:I
-      40: getstatic     #4                  // Field i_b:I
-      43: isub
-      44: istore        10
-      46: getstatic     #3                  // Field i_a:I
-      49: getstatic     #4                  // Field i_b:I
-      52: imul
-      53: istore        11
-      55: getstatic     #3                  // Field i_a:I
-      58: getstatic     #4                  // Field i_b:I
-      61: idiv
-      62: istore        12
-      64: getstatic     #5                  // Field l_a:J
-      67: getstatic     #6                  // Field l_b:J
-      70: ladd
-      71: lstore        13
-      73: getstatic     #5                  // Field l_a:J
-      76: getstatic     #6                  // Field l_b:J
-      79: lsub
-      80: lstore        15
-      82: getstatic     #5                  // Field l_a:J
-      85: getstatic     #6                  // Field l_b:J
-      88: lmul
-      89: lstore        17
-      91: getstatic     #5                  // Field l_a:J
-      94: getstatic     #6                  // Field l_b:J
-      97: ldiv
-      98: lstore        19
-     100: getstatic     #7                  // Field f_a:F
-     103: getstatic     #8                  // Field f_b:F
-     106: fadd
-     107: fstore        21
-     109: getstatic     #7                  // Field f_a:F
-     112: getstatic     #8                  // Field f_b:F
-     115: fsub
-     116: fstore        22
-     118: getstatic     #7                  // Field f_a:F
-     121: getstatic     #8                  // Field f_b:F
-     124: fmul
-     125: fstore        23
-     127: getstatic     #7                  // Field f_a:F
-     130: getstatic     #8                  // Field f_b:F
-     133: fdiv
-     134: fstore        24
-     136: getstatic     #9                  // Field d_a:D
-     139: getstatic     #10                 // Field d_b:D
-     142: dadd
-     143: dstore        25
-     145: getstatic     #9                  // Field d_a:D
-     148: getstatic     #10                 // Field d_b:D
-     151: dsub
-     152: dstore        27
-     154: getstatic     #9                  // Field d_a:D
-     157: getstatic     #10                 // Field d_b:D
-     160: dmul
-     161: dstore        29
-     163: getstatic     #9                  // Field d_a:D
-     166: getstatic     #10                 // Field d_b:D
-     169: ddiv
-     170: dstore        31
-     172: sipush        164
-     175: istore        33
-     177: bipush        34
-     179: istore        34
-     181: sipush        6435
-     184: istore        35
-     186: iconst_0
-     187: istore        36
-     189: getstatic     #3                  // Field i_a:I
-     192: getstatic     #4                  // Field i_b:I
-     195: if_icmple     202
-     198: iconst_1
-     199: putstatic     #11                 // Field is_a:Z
-     202: iconst_0
-     203: istore        37
-     205: iload         37
-     207: bipush        10
-     209: if_icmpge     228
-     212: getstatic     #3                  // Field i_a:I
-     215: getstatic     #4                  // Field i_b:I
-     218: iadd
-     219: putstatic     #3                  // Field i_a:I
-     222: iinc          37, 1
-     225: goto          205
-     228: return
-
-  static {};
-    Code:
-       0: bipush        11
-       2: putstatic     #3                  // Field i_a:I
-       5: bipush        -12
-       7: putstatic     #4                  // Field i_b:I
-      10: ldc2_w        #12                 // long 200l
-      13: putstatic     #5                  // Field l_a:J
-      16: ldc2_w        #14                 // long -200l
-      19: putstatic     #6                  // Field l_b:J
-      22: ldc           #16                 // float -10.5f
-      24: putstatic     #7                  // Field f_a:F
-      27: ldc           #17                 // float 10.1f
-      29: putstatic     #8                  // Field f_b:F
-      32: ldc2_w        #18                 // double 17.12d
-      35: putstatic     #9                  // Field d_a:D
-      38: ldc2_w        #20                 // double -11.22d
-      41: putstatic     #10                 // Field d_b:D
-      44: iconst_0
-      45: putstatic     #11                 // Field is_a:Z
-      48: iconst_1
-      49: putstatic     #22                 // Field is_b:Z
-      52: return
+       0: bipush        100  //将常量100压入栈中，当int取值-1~5采用iconst指令，取值-128~127采用bipush指令，取值-32768~32767采用sipush指令，取值-2147483648~2147483647采用 ldc 指令。
+       2: istore_1  //将栈顶int型数值存入第二个本地变量,既将100存储到第二个本地变量
+       3: iconst_m1  //将常量-1压入栈中
+       4: istore_2  //将栈顶int型数值存入第三个本地变量，既将-1存储到第三个本地变量
+       5: bipush        10  //将常量10压入栈中
+       7: istore_3  //将栈顶int型数值存入第四个本地变量，既将10存储到第四个本地变量
+       8: bipush        -5  //将常量-5压入栈中
+      10: istore        4  //将栈顶int型数值存入第五个本地变量，既将-5存储到第五个本地变量
+      12: bipush        11 //将常量11压入栈中
+      14: istore        5  //将栈顶int型数值存入第六个本地变量，既将11存储到第六个本地变量
+      16: bipush        -12  //将常量-12压入栈中
+      18: istore        6  //将栈顶int型数值存入第七个本地变量，既将-12存储到第七个本地变量
+      20: ldc2_w        #2  //从常量池索引2的位置取出long类型的200压入栈中                  // long 200l
+      23: lstore        7  //弹出栈顶元素200L存入第八个本地变量
+      25: ldc2_w        #4  //从常量池索引4的位置取出long类型的-200压入栈中                  // long -200l
+      28: lstore        9  //弹出栈顶元素-200L存入第十个本地变量，可能因为有符号long型，故占两个位置
+      30: ldc           #6  //从常量池索引6的位置取出float类型的-10.5f压入栈中                  // float -10.5f
+      32: fstore        11  //弹出栈顶元素-10.5f存入第十二个本地变量，可能因为有符号float，故占两个位置
+      34: ldc           #7  //从常量池索引7的位置取出float类型的10.1f压入栈中                  // float 10.1f
+      36: fstore        12  //弹出栈顶元素10.1f存入第十三个本地变量
+      38: ldc2_w        #8  //从常量池索引8的位置取出double类型的17.12d压入栈中                  // double 17.12d
+      41: dstore        13  //弹出栈顶元素17.12d存入第十四个本地变量
+      43: ldc2_w        #10  //从常量池索引10的位置取出double类型的-11.22d压入栈中                 // double -11.22d
+      46: dstore        15  //弹出栈顶元素-11.22d存入第十六个本地变量
+      48: iconst_0  //常量int类型的0入栈，0-false，1-true
+      49: istore        17  //将栈顶int类型的数值存入第十八个本地变量，既将0存储到第十八个本地变量
+      51: iconst_1  //常量int类型的1入栈,0-false,1-true
+      52: istore        18  //将栈顶int类型的数值存入第十九个本地变量，既将1存储到第十九个本地变量
+      54: bipush        65  //将常量65压入栈中，因为A对应到ASCII码值为65，见附录
+      56: istore        19  //将栈顶int类型的数值存入第二十个本地变量，既将65存储到第二十个本地变量
+      58: bipush        99  //将常量99压入栈中，因为c对应到ASCII码值为99，见附录
+      60: istore        20  //将栈顶int类型的数值存入第二十一个本地变量，既将99存储到第二十一个本地变量
+      62: bipush        99  //将常量99压入栈中,因为两个byte求和为99
+      64: istore        21  //将栈顶int类型的数值存入第二十二个本地变量，既将99存储到第二十二个本地变量
+      66: bipush        101  //将常量101压入栈中，因为两个byte做差为101
+      68: istore        22  //弹出栈顶元素101，将其存入第二十三个本地变量
+      70: bipush        -100  //将常量-100压入栈中，因为两个byte相乘为-100
+      72: istore        23  //弹出栈顶元素-100，将其存入第二十四个本地变量
+      74: bipush        -100  //将常量-100压入栈中，因为两个byte相除为-100
+      76: istore        24  //弹出栈顶元素-100，将其存入第二十五个本地变量
+      78: getstatic     #12  //获取静态字段，因为程序中有System.out.println();                 // Field java/lang/System.out:Ljava/io/PrintStream;
+      81: new           #13  //为新对象分配内存                // class java/lang/StringBuilder
+      84: dup  //复制栈顶的值
+      85: invokespecial #14  /*用来调用构造函数，但也可以用于调用同一个类中的 private 方法, 以及
+可见的超类方法*/                 // Method java/lang/StringBuilder."<init>":()V
+      88: ldc           #15  //从常量池15索引取b_result_addition值并压入栈中                 // String b_result_addition:
+      90: invokevirtual #16  /*如果是具体类型的目标对象，invokevirtual 用于调用公共，受保护和
+package 级的私有方法*/                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+      93: iload         21  //将局部变量表第二十一个变量压入栈中
+      95: invokevirtual #17  /*用来调用构造函数，但也可以用于调用同一个类中的 private 方法, 以及
+可见的超类方法*/                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+      98: invokevirtual #18  /*用来调用构造函数，但也可以用于调用同一个类中的 private 方法, 以及
+可见的超类方法*/                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     101: invokevirtual #19  /*用来调用构造函数，但也可以用于调用同一个类中的 private 方法, 以及
+可见的超类方法*/                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     104: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     107: new           #13                 // class java/lang/StringBuilder
+     110: dup
+     111: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     114: ldc           #20                 // String b_result_subtraction:
+     116: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     119: iload         22
+     121: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     124: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     127: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     130: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     133: new           #13                 // class java/lang/StringBuilder
+     136: dup
+     137: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     140: ldc           #21                 // String b_result_multiplication:
+     142: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     145: iload         23
+     147: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     150: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     153: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     156: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     159: new           #13                 // class java/lang/StringBuilder
+     162: dup
+     163: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     166: ldc           #22                 // String b_result_division:
+     168: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     171: iload         24
+     173: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     176: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     179: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     182: iconst_5  //将常量5压入栈中
+     183: istore        25  //弹出栈顶元素5，并将其存储入第二十六个本地变量表
+     185: bipush        15  //将常量15压入栈中
+     187: istore        26  //弹出栈顶元素16，并将其存储入第二十七个本地变量表
+     189: bipush        -50  //将常量-50压入栈中
+     191: istore        27  //弹出栈顶元素-50，并将其存储入第二十八个本地变量表
+     193: bipush        -2  //将常量-2压入栈中
+     195: istore        28  //弹出栈顶元素-2，并将其存储入第二十九个本地变量表
+     197: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     200: new           #13                 // class java/lang/StringBuilder
+     203: dup
+     204: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     207: ldc           #23                 // String s_result_addition:
+     209: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     212: iload         25
+     214: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     217: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     220: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     223: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     226: new           #13                 // class java/lang/StringBuilder
+     229: dup
+     230: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     233: ldc           #24                 // String s_result_subtraction:
+     235: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     238: iload         26
+     240: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     243: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     246: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     249: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     252: new           #13                 // class java/lang/StringBuilder
+     255: dup
+     256: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     259: ldc           #25                 // String s_result_multiplication:
+     261: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     264: iload         27
+     266: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     269: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     272: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     275: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     278: new           #13                 // class java/lang/StringBuilder
+     281: dup
+     282: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     285: ldc           #26                 // String s_result_division:
+     287: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     290: iload         28
+     292: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     295: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     298: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     301: iload         5  //将第五个int型变量从本地变量表加载到栈顶
+     303: iload         6  //将第六个int型变量从本地变量表加载到栈顶
+     305: iadd  //将栈顶两个int型的数值相加并将结果压入栈顶
+     306: istore        29  //将栈顶的数值弹出保存到第三十个本地变量表
+     308: iload         5  //将第五个int型变量从本地变量表加载到栈顶
+     310: iload         6  //将第六个int型变量从本地变量表加载到栈顶
+     312: isub  //将栈顶两个int型数值相减并将结果压入栈顶
+     313: istore        30  //将栈顶的数值弹出保存到第三十一个本地变量表
+     315: iload         5  //将第五个int型变量从本地变量表加载到栈顶
+     317: iload         6  //将第六个int型变量从本地变量表加载到栈顶
+     319: imul  //将栈顶两个int型数值相乘并将结果压入栈顶
+     320: istore        31  //弹出栈顶数值保存到第三十二个本地变量表
+     322: iload         5  //将第五个int型变量从本地变量表加载到栈顶
+     324: iload         6  //将第六个int型变量从本地变量表加载到栈顶
+     326: idiv  //将栈顶两个int型数值相除并将结果压入栈顶
+     327: istore        32  //弹出栈顶数值并保存到第三十三个本地变量表
+     329: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     332: new           #13                 // class java/lang/StringBuilder
+     335: dup
+     336: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     339: ldc           #27                 // String i_result_addition:
+     341: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     344: iload         29
+     346: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     349: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     352: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     355: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     358: new           #13                 // class java/lang/StringBuilder
+     361: dup
+     362: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     365: ldc           #28                 // String i_result_subtraction:
+     367: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     370: iload         30
+     372: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     375: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     378: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     381: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     384: new           #13                 // class java/lang/StringBuilder
+     387: dup
+     388: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     391: ldc           #29                 // String i_result_multiplication:
+     393: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     396: iload         31
+     398: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     401: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     404: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     407: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     410: new           #13                 // class java/lang/StringBuilder
+     413: dup
+     414: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     417: ldc           #30                 // String i_result_division:
+     419: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     422: iload         32
+     424: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+     427: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     430: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     433: lload         7
+     435: lload         9
+     437: ladd
+     438: lstore        33
+     440: lload         7
+     442: lload         9
+     444: lsub
+     445: lstore        35
+     447: lload         7
+     449: lload         9
+     451: lmul
+     452: lstore        37
+     454: lload         7
+     456: lload         9
+     458: ldiv
+     459: lstore        39
+     461: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     464: new           #13                 // class java/lang/StringBuilder
+     467: dup
+     468: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     471: ldc           #31                 // String l_result_addition:
+     473: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     476: lload         33
+     478: invokevirtual #32                 // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     481: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     484: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     487: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     490: new           #13                 // class java/lang/StringBuilder
+     493: dup
+     494: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     497: ldc           #33                 // String l_result_subtraction:
+     499: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     502: lload         35
+     504: invokevirtual #32                 // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     507: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     510: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     513: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     516: new           #13                 // class java/lang/StringBuilder
+     519: dup
+     520: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     523: ldc           #34                 // String l_result_multipication:
+     525: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     528: lload         37
+     530: invokevirtual #32                 // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     533: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     536: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     539: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     542: new           #13                 // class java/lang/StringBuilder
+     545: dup
+     546: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     549: ldc           #35                 // String l_result_division:
+     551: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     554: lload         39
+     556: invokevirtual #32                 // Method java/lang/StringBuilder.append:(J)Ljava/lang/StringBuilder;
+     559: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     562: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     565: fload         11
+     567: fload         12
+     569: fadd
+     570: fstore        41
+     572: fload         11
+     574: fload         12
+     576: fsub
+     577: fstore        42
+     579: fload         11
+     581: fload         12
+     583: fmul
+     584: fstore        43
+     586: fload         11
+     588: fload         12
+     590: fdiv
+     591: fstore        44
+     593: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     596: new           #13                 // class java/lang/StringBuilder
+     599: dup
+     600: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     603: ldc           #36                 // String f_result_addition:
+     605: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     608: fload         41
+     610: invokevirtual #37                 // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     613: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     616: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     619: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     622: new           #13                 // class java/lang/StringBuilder
+     625: dup
+     626: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     629: ldc           #38                 // String f_result_subtraction:
+     631: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     634: fload         42
+     636: invokevirtual #37                 // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     639: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     642: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     645: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     648: new           #13                 // class java/lang/StringBuilder
+     651: dup
+     652: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     655: ldc           #39                 // String f_result_multipication:
+     657: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     660: fload         43
+     662: invokevirtual #37                 // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     665: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     668: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     671: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     674: new           #13                 // class java/lang/StringBuilder
+     677: dup
+     678: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     681: ldc           #40                 // String f_result_division:
+     683: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     686: fload         44
+     688: invokevirtual #37                 // Method java/lang/StringBuilder.append:(F)Ljava/lang/StringBuilder;
+     691: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     694: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     697: dload         13
+     699: dload         15
+     701: dadd
+     702: dstore        45
+     704: dload         13
+     706: dload         15
+     708: dsub
+     709: dstore        47
+     711: dload         13
+     713: dload         15
+     715: dmul
+     716: dstore        49
+     718: dload         13
+     720: dload         15
+     722: ddiv
+     723: dstore        51
+     725: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     728: new           #13                 // class java/lang/StringBuilder
+     731: dup
+     732: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     735: ldc           #41                 // String d_result_addition:
+     737: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     740: dload         45
+     742: invokevirtual #42                 // Method java/lang/StringBuilder.append:(D)Ljava/lang/StringBuilder;
+     745: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     748: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     751: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     754: new           #13                 // class java/lang/StringBuilder
+     757: dup
+     758: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     761: ldc           #43                 // String d_result_subtraction:
+     763: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     766: dload         47
+     768: invokevirtual #42                 // Method java/lang/StringBuilder.append:(D)Ljava/lang/StringBuilder;
+     771: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     774: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     777: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     780: new           #13                 // class java/lang/StringBuilder
+     783: dup
+     784: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     787: ldc           #44                 // String d_result_multipication:
+     789: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     792: dload         49
+     794: invokevirtual #42                 // Method java/lang/StringBuilder.append:(D)Ljava/lang/StringBuilder;
+     797: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     800: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     803: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     806: new           #13                 // class java/lang/StringBuilder
+     809: dup
+     810: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     813: ldc           #45                 // String d_result_division:
+     815: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     818: dload         51
+     820: invokevirtual #42                 // Method java/lang/StringBuilder.append:(D)Ljava/lang/StringBuilder;
+     823: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     826: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     829: sipush        164
+     832: istore        53
+     834: bipush        34
+     836: istore        54
+     838: sipush        6435
+     841: istore        55
+     843: iconst_0
+     844: istore        56
+     846: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     849: new           #13                 // class java/lang/StringBuilder
+     852: dup
+     853: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     856: ldc           #46                 // String c_result_addition:
+     858: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     861: iload         53
+     863: invokevirtual #47                 // Method java/lang/StringBuilder.append:(C)Ljava/lang/StringBuilder;
+     866: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     869: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     872: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     875: new           #13                 // class java/lang/StringBuilder
+     878: dup
+     879: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     882: ldc           #48                 // String c_resullt_subtraction:
+     884: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     887: iload         54
+     889: invokevirtual #47                 // Method java/lang/StringBuilder.append:(C)Ljava/lang/StringBuilder;
+     892: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     895: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     898: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     901: new           #13                 // class java/lang/StringBuilder
+     904: dup
+     905: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     908: ldc           #49                 // String c_result_multipication:
+     910: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     913: iload         55
+     915: invokevirtual #47                 // Method java/lang/StringBuilder.append:(C)Ljava/lang/StringBuilder;
+     918: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     921: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     924: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     927: new           #13                 // class java/lang/StringBuilder
+     930: dup
+     931: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     934: ldc           #50                 // String c_result_division:
+     936: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     939: iload         56
+     941: invokevirtual #47                 // Method java/lang/StringBuilder.append:(C)Ljava/lang/StringBuilder;
+     944: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     947: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     950: iload         5
+     952: iload         6
+     954: if_icmple     986
+     957: iconst_1
+     958: istore        17
+     960: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     963: new           #13                 // class java/lang/StringBuilder
+     966: dup
+     967: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+     970: ldc           #51                 // String is_a:
+     972: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+     975: iload         17
+     977: invokevirtual #52                 // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
+     980: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+     983: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     986: iconst_0
+     987: istore        57
+     989: iload         57
+     991: bipush        10
+     993: if_icmpge     1035
+     996: iload         5
+     998: iload         6
+    1000: iadd
+    1001: istore        5
+    1003: getstatic     #12                 // Field java/lang/System.out:Ljava/io/PrintStream;
+    1006: new           #13                 // class java/lang/StringBuilder
+    1009: dup
+    1010: invokespecial #14                 // Method java/lang/StringBuilder."<init>":()V
+    1013: ldc           #53                 // String i_a:
+    1015: invokevirtual #16                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    1018: iload         5
+    1020: invokevirtual #17                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+    1023: invokevirtual #18                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+    1026: invokevirtual #19                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+    1029: iinc          57, 1
+    1032: goto          989
+    1035: return
 }
 ```
 
@@ -658,4 +975,39 @@ JMM规范明确定义了不同的线程之间，通过哪些方式，在什么�
 可以被其他线程影响或感知的操作，称之为线程间的交互行为，可分为：读取、写入、同步操作、外部操作等等。其中同步操作包括：对volatile变量的读写，对管程（monitor）的锁定与解锁，现成的起始操作与结尾操作，线程启动和结束等等。外部操作则是指对线程执行环境之外的操作，比如停止其他线程等等。
 
 JMM规范的是线程间的交互操作，而不是线程内部对局部变量进行的操作。
+
+## 附录
+
+**英文字母的ASCII码值**
+
+*小写字母的ASCII码值比大写字母ASCII码值大32*
+
+| 大写字母 | 十进制ASCII码 | 小写字母 | 十进制ASCII码 |
+| -------- | ------------- | -------- | ------------- |
+| A        | 65            | a        | 97            |
+| B        | 66            | b        | 98            |
+| C        | 67            | c        | 99            |
+| D        | 68            | d        | 100           |
+| E        | 69            | e        | 101           |
+| F        | 70            | f        | 102           |
+| G        | 71            | g        | 103           |
+| H        | 72            | h        | 104           |
+| I        | 73            | i        | 105           |
+| J        | 74            | j        | 106           |
+| K        | 75            | k        | 107           |
+| L        | 76            | l        | 108           |
+| M        | 77            | m        | 109           |
+| N        | 78            | n        | 110           |
+| O        | 79            | o        | 111           |
+| P        | 80            | p        | 112           |
+| Q        | 81            | q        | 113           |
+| R        | 82            | r        | 114           |
+| S        | 83            | s        | 115           |
+| T        | 84            | t        | 116           |
+| U        | 85            | u        | 117           |
+| V        | 86            | v        | 118           |
+| W        | 87            | w        | 119           |
+| X        | 88            | x        | 120           |
+| Y        | 89            | y        | 121           |
+| Z        | 90            | z        | 122           |
 
