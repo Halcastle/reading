@@ -976,11 +976,134 @@ JMM规范明确定义了不同的线程之间，通过哪些方式，在什么�
 
 JMM规范的是线程间的交互操作，而不是线程内部对局部变量进行的操作。
 
-# 
+# JVM启动参数
 
-## 附录
+![image-20210304092638480](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210304092638480.png)
 
-**英文字母的ASCII码值**
+1. 以-开头为标准参数，所有的JVM都要实现这些参数，并且向后兼容
+
+2. -D设置设置系统属性
+
+3. 以-X开头为非标准参数，基本都是传给JVM的，默认JVM实现这些参数的功能，但是并不能保证所有的JVM实现都满足，且不保证向后兼容。可以使用java -X命令来查看当前JVM支持的非标准参数
+
+4. 以-XX：开头为非稳定参数，专门用于控制JVM的行为，跟具体的JVM实现有关，随时可能会在下个版本取消
+
+5. -XX：+-Flags形式，+-是对布尔值进行开关
+
+6. -XX：key=value形式，指定某个选项的值
+
+   > -server
+   >
+   > -Dfile.encoding=UTF-8
+   >
+   > -Xmx8g
+   >
+   > -XX:+UseG1GC
+   >
+   > -XX:MaxPermSize=256m
+
+## 系统属性参数
+
+> 类似于环境变量
+
+-Dfile.encoding=UTF-8
+
+-Duser.timezone=GMT+08
+
+-Dmaven.test.skip=true
+
+-Dio.netty.eventLoopThreads=8
+
+-Dproperty=value（在应用程序可以使用String a = System.getProperty("a");）
+
+System.setProperty("a","A10001");
+
+String a = System.getProperty("a");
+
+## 运行模式参数
+
+1. -server：设置JVM使用server模式，特点是启动速度比较慢，但运行时性能和内存管理效率很高，适用于生产环境，在具有64位能力的JDK环境下将默认启用该模式，而忽略-client参数。【设置JIT编译器的模式】
+2. -client：JDK1.7之前在32位的x86机器上的默认值是-client选项，设置JVM使用client模式，特点是启动速度比较快，但运行时性能和内存管理效率不高，通常用于客户端应用程序或者PC应用开发和调式，此外，我们知道JVM加载字节码之后，可以解释执行，也可以编译成本地代码再执行，所以可以配置JVM对字节码的处理模式【设置JIT编译器的模式】
+3. -Xint：在解释模式（interpreted mode）下运行，-Xint标记会强制JVM解释执行所有的字节码，这当然会降低运行速度，通常低十倍或更多【设置JVM是采用解释器还是JIT编译器，此模式为完全采用解释器模式执行程序】
+4. -Xcomp：-Xcomp参数与-Xint正好相反，JVM在第一次使用时会把所有的字节码编译成本地代码，从而带来最大程度的优化【注意预热】【设置JVM是采用解释器还是JIT编译器，此模式为完全采用即时编译器模式执行程序，如果即时编译出现问题，解释器会介入执行】
+5. -Xmixed:-Xmixed是混合模式，将解释模式和编译模式混合使用，由JVM自己决定，这是JVM的默认模式，也是推荐模式，我们使用java -version可以看到mixed mode等信息【设置JVM是采用解释器还是JIT编译器，此模式为采用解释器和JIT编译器并存的方式共同执行程序，默认模式】
+
+## 堆内存设置参数
+
+> 堆内（Xms-Xmx）
+>
+> 非堆+堆外
+
+- -Xmx指定最大堆内存，如-Xmx4g，这只是限制了Heap部分的最大值为4g，这个内存不包括堆外使用的内存
+- -Xms指定堆内存空间的初始大小，如-Xms4g，而且指定的内存大小，并不是操作系统实际分配的初始值，而是GC先规划好，用到才分配。专用服务器上需要保持-Xms和-Xmx一直，否则应用可能就会有好几个FullGC，当两者配置不一致时，堆内存扩容可能导致性能抖动
+- -Xmn等价于-XX：newSize，使用G1垃圾收集器不应该设置该选项，在其他的某些业务场景下可以设置。官方建议设置为-Xmx的1/2~1/4
+- -XX：MaxPermSize，这是JDK1.7之前使用的，Java8默认允许的Meta空间无限大，此参数无效
+- -XX：MaxMetaspaceSize=size,Java8默认不限制Meta空间，一般不允许设置该选项
+- -XX：MaxDirectMemorySize=size,系统可以使用的最大堆外内存，这个参数跟-Dsun.nio.MaxDirectMemorySize效果相同
+- -Xss,设置每个线程栈的字节数。例如-Xss1m指定线程栈为1MB，与-XX：TreadStackSize=1m等价
+
+> **JVM参数默认值：**
+>
+> **-Xms：**指定jvm堆的初始大小，默认为物理内存的1/64，最小为1M；可以指定单位，比如k、m，若不指定，则默认为字节。
+>
+> **-Xmx:**指定jvm堆的最大值，默认为物理内存的1/4或者1G，最小为2M；单位与-Xms一致，一般建议设置为机器内存的一半
+>
+> **-Xss：**设置单个线程栈的大小，一般默认为512k
+
+## GC设置参数
+
+1. -XX:+UseG1GC：使用G1垃圾回收器
+2. -XX:+UseConcMarkSweepGC:使用CMS垃圾回收器
+3. -XX:+UseSerialGC：使用串行垃圾回收器
+4. -XX:+UseParallelGC:使用并行垃圾回收器
+5. -XX:+UnlockExperimentalVMOptions-XX:UseZGC //JAVA11
+6. -XX:+UnlockExperimentalVMOptions-XX:+UseShenandoahGC //Java12
+
+## 分析诊断参数
+
+1. -XX：+-HeapDumpOnOutOfMemoryError 选项, 当 OutOfMemoryError 产生，即内存溢出(堆内存或持久代)时，自动 Dump 堆内存
+
+   > 示例用法： java -XX:+HeapDumpOnOutOfMemoryError -Xmx256m ConsumeHeap
+
+2. -XX：HeapDumpPath 选项, 与 HeapDumpOnOutOfMemoryError 搭配使用, 指定内存溢出时 Dump 文件的目录。【如果没有指定则默认为启动 Java 程序的工作目录。】
+
+   > 示例用法： java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/ ConsumeHeap 
+   >
+   > 自动 Dump 的 hprof 文件会存储到 /usr/local/ 目录下
+
+3. -XX：OnError 选项, 发生致命错误时（fatal error）执行的脚本。
+
+   例如, 写一个脚本来记录出错时间, 执行一些命令, 或者 curl 一下某个在线报警的 url.
+
+   > 示例用法：java -XX:OnError="gdb - %p" MyApp 
+   >
+   > 可以发现有一个 %p 的格式化字符串，表示进程 PID。
+
+4. -XX：OnOutOfMemoryError 选项, 抛出 OutOfMemoryError 错误时执行的脚本
+5. -XX：ErrorFile=filename 选项, 致命错误的日志文件名,绝对路径或者相对路径
+6. -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1506，远程调试
+
+## JavaAgent参数
+
+Agent 是 JVM 中的一项黑科技, 可以通过无侵入方式来做很多事情，比如注入 AOP 代码，执行统计等等，权限非常大。这里简单介绍一下配置选项，详细功能需要专门来讲。
+
+设置 agent 的语法如下: 
+
+-agentlib:libname[=options] 启用 native 方式的 agent, 参考 LD_LIBRARY_PATH 路径。
+
+-agentpath:pathname[=options] 启用 native 方式的 agent。 
+
+-javaagent:jarpath[=options] 启用外部的 agent 库, 比如 pinpoint.jar 等等。
+
+-Xnoagent 则是禁用所有 agent。
+
+以下示例开启 CPU 使用时间抽样分析:
+
+JAVA_OPTS="-agentlib:hprof=cpu=samples,file=cpu.samples.log"
+
+# 附录
+
+## **英文字母的ASCII码值**
 
 *小写字母的ASCII码值比大写字母ASCII码值大32*
 
@@ -1013,3 +1136,354 @@ JMM规范的是线程间的交互操作，而不是线程内部对局部变量�
 | Y        | 89            | y        | 121           |
 | Z        | 90            | z        | 122           |
 
+## JVM启动参数大全及默认值
+
+Java启动参数共分为三类；
+
+其一是标准参数（-），所有的JVM实现都必须实现这些参数的功能，而且向后兼容；
+
+其二是非标准参数（-X），默认jvm实现这些参数的功能，但是并不保证所有jvm实现都满足，且不保证向后兼容；
+
+其三是非Stable参数（-XX），此类参数各个jvm实现会有所不同，将来可能会随时取消，需要慎重使用；
+
+### 一、JVM标准参数(-)
+
+JVM的标准参数都是以”-“开头，通过输入”java -help”或者”java -?”，可以查看JVM标准参数列表。如
+![这里写代码片](http://static.tianshouzhi.com/ueditor/upload/image/20160220/1455983729301030637.png)
+
+以下是JVM标准参数的详细介绍(红色标记的参数请着重注意):
+以下是JVM标准参数的详细介绍(红色标记的参数请着重注意):
+
+-client
+
+设置jvm使用client模式，特点是启动速度比较快，但运行时性能和内存管理效率不高，通常用于客户端应用程序或者PC应用开发和调试。
+
+-server
+
+设置jvm使server模式，特点是启动速度比较慢，但运行时性能和内存管理效率很高，适用于生产环境。在具有64位能力的jdk环境下将默认启用该模式，而忽略-client参数。
+
+-agentlib:libname[=options]
+
+用于装载本地lib包；
+
+其中libname为本地代理库文件名，默认搜索路径为环境变量PATH中的路径，options为传给本地库启动时的参数，多个参数之间用逗号分隔。在Windows平台上jvm搜索本地库名为libname.dll的文件，在linux上jvm搜索本地库名为libname.so的文件，搜索路径环境变量在不同系统上有所不同，比如Solaries上就默认搜索LD_LIBRARY_PATH。
+
+比如：-agentlib:hprof
+
+用来获取jvm的运行情况，包括CPU、内存、线程等的运行数据，并可输出到指定文件中；windows中搜索路径为JRE_HOME/bin/hprof.dll。
+
+-agentpath:pathname[=options]
+
+按全路径装载本地库，不再搜索PATH中的路径；其他功能和agentlib相同；更多的信息待续，在后续的JVMTI部分会详述。
+
+-classpath classpath
+
+-cp classpath
+
+告知jvm搜索目录名、jar文档名、zip文档名，之间用分号;分隔；使用-classpath后jvm将不再使用CLASSPATH中的类搜索路径，如果-classpath和CLASSPATH都没有设置，则jvm使用当前路径(.)作为类搜索路径。
+
+jvm搜索类的方式和顺序为：Bootstrap，Extension，User。
+
+Bootstrap中的路径是jvm自带的jar或zip文件，jvm首先搜索这些包文件，用System.getProperty(“sun.boot.class.path”)可得到搜索路径。
+
+Extension是位于JRE_HOME/lib/ext目录下的jar文件，jvm在搜索完Bootstrap后就搜索该目录下的jar文件，用System.getProperty(“java.ext.dirs”)可得到搜索路径。
+
+User搜索顺序为当前路径.、CLASSPATH、-classpath，jvm最后搜索这些目录，用System.getProperty(“java.class.path”)可得到搜索路径。
+
+-Dproperty=value
+
+设置系统属性名/值对，运行在此jvm之上的应用程序可用System.getProperty(“property”)得到value的值。
+
+如果value中有空格，则需要用双引号将该值括起来，如-Dname=”space string”。
+
+该参数通常用于设置系统级全局变量值，如配置文件路径，以便该属性在程序中任何地方都可访问。
+
+-enableassertions[:”…” | : ]
+
+-ea[:”…” | : ]
+
+上述参数就用来设置jvm是否启动断言机制（从JDK 1.4开始支持），缺省时jvm关闭断言机制。
+
+用-ea 可打开断言机制，不加和classname时运行所有包和类中的断言，如果希望只运行某些包或类中的断言，可将包名或类名加到-ea之后。例如要启动包com.wombat.fruitbat中的断言，可用命令java -ea:com.wombat.fruitbat…。
+
+-disableassertions[:”…” | :
+
+### 二、JVM非标准参数(-X)
+
+通过”java -X”可以输出非标准参数列表，如下所示：
+![这里写图片描述](http://static.tianshouzhi.com/ueditor/upload/image/20160221/1455984309783026624.png)
+
+非标准参数又称为扩展参数，其列表如下：
+
+-Xint
+
+设置jvm以解释模式运行，所有的字节码将被直接执行，而不会编译成本地码。
+
+-Xbatch
+
+关闭后台代码编译，强制在前台编译，编译完成之后才能进行代码执行；
+
+默认情况下，jvm在后台进行编译，若没有编译完成，则前台运行代码时以解释模式运行。
+
+-Xbootclasspath:bootclasspath
+
+让jvm从指定路径（可以是分号分隔的目录、jar、或者zip）中加载bootclass，用来替换jdk的rt.jar；若非必要，一般不会用到；
+
+-Xbootclasspath/a:path
+
+将指定路径的所有文件追加到默认bootstrap路径中；
+
+-Xbootclasspath/p:path
+
+让jvm优先于bootstrap默认路径加载指定路径的所有文件；
+
+-Xcheck:jni
+
+对JNI函数进行附加check；此时jvm将校验传递给JNI函数参数的合法性，在本地代码中遇到非法数据时，jmv将报一个致命错误而终止；使用该参数后将造成性能下降，请慎用。
+
+-Xfuture
+
+让jvm对类文件执行严格的格式检查（默认jvm不进行严格格式检查），以符合类文件格式规范，推荐开发人员使用该参数。
+
+-Xnoclassgc
+
+关闭针对class的gc功能；因为其阻止内存回收，所以可能会导致OutOfMemoryError错误，慎用；
+
+-Xincgc
+
+开启增量gc（默认为关闭）；这有助于减少长时间GC时应用程序出现的停顿；但由于可能和应用程序并发执行，所以会降低CPU对应用的处理能力。
+
+-Xloggc:file
+
+与-verbose:gc功能类似，只是将每次GC事件的相关情况记录到一个文件中，文件的位置最好在本地，以避免网络的潜在问题。
+
+若与verbose命令同时出现在命令行中，则以-Xloggc为准。
+
+-Xms
+
+指定jvm堆的初始大小，默认为物理内存的1/64，最小为1M；可以指定单位，比如k、m，若不指定，则默认为字节。
+
+-Xmx
+
+指定jvm堆的最大值，默认为物理内存的1/4或者1G，最小为2M；单位与-Xms一致。
+
+-Xss
+
+设置单个线程栈的大小，一般默认为512k。
+
+-Xprof
+
+输出 cpu 配置文件数据
+
+-Xrs
+
+减少jvm对操作系统信号（signals）的使用，该参数从1.3.1开始有效；
+
+从jdk1.3.0开始，jvm允许程序在关闭之前还可以执行一些代码（比如关闭数据库的连接池），即使jvm被突然终止；
+
+jvm关闭工具通过监控控制台的相关事件而满足以上的功能；更确切的说，通知在关闭工具执行之前，先注册控制台的控制handler，然后对CTRL_C_EVENT, CTRL_CLOSE_EVENT, CTRL_LOGOFF_EVENT, and CTRL_SHUTDOWN_EVENT这几类事件直接返回true。
+
+但如果jvm以服务的形式在后台运行（比如servlet引擎），他能接收CTRL_LOGOFF_EVENT事件，但此时并不需要初始化关闭程序；为了避免类似冲突的再次出现，从jdk1.3.1开始提供-Xrs参数；当此参数被设置之后，jvm将不接收控制台的控制handler，也就是说他不监控和处理CTRL_C_EVENT, CTRL_CLOSE_EVENT, CTRL_LOGOFF_EVENT, or CTRL_SHUTDOWN_EVENT事件。
+
+上面这些参数中，比如-Xmsn、-Xmxn……都是我们性能优化中很重要的参数；
+
+-Xprof、-Xloggc:file等都是在没有专业跟踪工具情况下排错的好手；
+
+### 三、JVM非Stable参数（-XX）
+
+Java 6（update 21oder 21之后）版本， HotSpot JVM 提供给了两个新的参数，在JVM启动后，在命令行中可以输出所有XX参数和值。
+
+```
+-XX:+PrintFlagsFinal and -XX:+PrintFlagsInitial1
+```
+
+读者可以使用以下语句输出所有的参数和默认值
+
+```
+java -XX:+PrintFlagsInitial  -XX:+PrintFlagsInitial>>1.txt1
+```
+
+由于非State参数非常的多，因此这里就不列出所有参数进行讲解。只介绍我们比较常用的。
+
+Java HotSpot VM中-XX:的可配置参数列表进行描述；
+
+这些参数可以被松散的聚合成三类：
+
+行为参数（Behavioral Options）：用于改变jvm的一些基础行为；
+
+性能调优（Performance Tuning）：用于jvm的性能调优；
+
+调试参数（Debugging Options）：一般用于打开跟踪、打印、输出等jvm参数，用于显示jvm更加详细的信息；
+
+```sh
+行为参数(功能开关)
+
+-XX:-DisableExplicitGC  禁止调用System.gc()；但jvm的gc仍然有效
+
+-XX:+MaxFDLimit 最大化文件描述符的数量限制
+
+-XX:+ScavengeBeforeFullGC   新生代GC优先于Full GC执行
+
+-XX:+UseGCOverheadLimit 在抛出OOM之前限制jvm耗费在GC上的时间比例
+
+-XX:-UseConcMarkSweepGC 对老生代采用并发标记交换算法进行GC
+
+-XX:-UseParallelGC  启用并行GC
+
+-XX:-UseParallelOldGC   对Full GC启用并行，当-XX:-UseParallelGC启用时该项自动启用
+
+-XX:-UseSerialGC    启用串行GC
+
+-XX:+UseThreadPriorities    启用本地线程优先级
+
+性能调优
+
+-XX:LargePageSizeInBytes=4m 设置用于Java堆的大页面尺寸
+
+-XX:MaxHeapFreeRatio=70 GC后java堆中空闲量占的最大比例
+
+-XX:MaxNewSize=size 新生成对象能占用内存的最大值
+
+-XX:MaxPermSize=64m 老生代对象能占用内存的最大值
+
+-XX:MinHeapFreeRatio=40 GC后java堆中空闲量占的最小比例
+
+-XX:NewRatio=2  新生代内存容量与老生代内存容量的比例
+
+-XX:NewSize=2.125m  新生代对象生成时占用内存的默认值
+
+-XX:ReservedCodeCacheSize=32m   保留代码占用的内存容量
+
+-XX:ThreadStackSize=512 设置线程栈大小，若为0则使用系统默认值
+
+-XX:+UseLargePages  使用大页面内存
+
+调试参数
+
+-XX:-CITime 打印消耗在JIT编译的时间
+
+-XX:ErrorFile=./hs_err_pid<pid>.log 保存错误日志或者数据到文件中
+
+-XX:-ExtendedDTraceProbes   开启solaris特有的dtrace探针
+
+-XX:HeapDumpPath=./java_pid<pid>.hprof  指定导出堆信息时的路径或文件名
+
+-XX:-HeapDumpOnOutOfMemoryError 当首次遭遇OOM时导出此时堆中相关信息
+
+-XX:OnError="<cmd args>;<cmd args>" 出现致命ERROR之后运行自定义命令
+
+-XX:OnOutOfMemoryError="<cmd args>;<cmd args>"  当首次遭遇OOM时执行自定义命令
+
+-XX:-PrintClassHistogram    遇到Ctrl-Break后打印类实例的柱状信息，与jmap -histo功能相同
+
+-XX:-PrintConcurrentLocks   遇到Ctrl-Break后打印并发锁的相关信息，与jstack -l功能相同
+
+-XX:-PrintCommandLineFlags  打印在命令行中出现过的标记
+
+-XX:-PrintCompilation   当一个方法被编译时打印相关信息
+
+-XX:-PrintGC    每次GC时打印相关信息
+
+-XX:-PrintGC Details    每次GC时打印详细信息
+
+-XX:-PrintGCTimeStamps  打印每次GC的时间戳
+
+-XX:-TraceClassLoading  跟踪类的加载信息
+
+-XX:-TraceClassLoadingPreorder  跟踪被引用到的所有类的加载信息
+
+-XX:-TraceClassResolution   跟踪常量池
+
+-XX:-TraceClassUnloading    跟踪类的卸载信息
+
+-XX:-TraceLoaderConstraints 跟踪类加载器约束的相关信息
+```
+
+## JVM调优实践
+
+### 大型网站服务器案例
+
+承受海量访问的动态Web应用
+
+**服务器配置：**8 CPU, 8G MEM, JDK 1.6.X
+
+**参数方案：**
+
+-server -Xmx3550m -Xms3550m -Xmn1256m -Xss128k -XX:SurvivorRatio=6 -XX:MaxPermSize=256m -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=0 -XX:+UseConcMarkSweepGC
+
+**调优说明：**
+
+-Xmx 与 -Xms 相同以避免JVM反复重新申请内存。-Xmx 的大小约等于系统内存大小的一半，即充分利用系统资源，又给予系统安全运行的空间。
+-Xmn1256m 设置年轻代大小为1256MB。此值对系统性能影响较大，Sun官方推荐配置年轻代大小为整个堆的3/8。
+-Xss128k 设置较小的线程栈以支持创建更多的线程，支持海量访问，并提升系统性能。
+-XX:SurvivorRatio=6 设置年轻代中Eden区与Survivor区的比值。系统默认是8，根据经验设置为6，则2个Survivor区与1个Eden区的比值为2:6，一个Survivor区占整个年轻代的1/8。【SurvivorRatio配置为N，那么比例为---eden:s0:s1=N:1:1，计算时候Xmn/(N+1+1) 就是每一份的大小，对应乘就是Eden，s0,s1的大小】
+-XX:ParallelGCThreads=8 配置并行收集器的线程数，即同时8个线程一起进行垃圾回收。此值一般配置为与CPU数目相等。
+-XX:MaxTenuringThreshold=0 设置垃圾最大年龄（在年轻代的存活次数）。如果设置为0的话，则年轻代对象不经过Survivor区直接进入年老代。对于年老代比较多的应用，可以提高效率；如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概率。根据被海量访问的动态Web应用之特点，其内存要么被缓存起来以减少直接访问DB，要么被快速回收以支持高并发海量请求，因此其内存对象在年轻代存活多次意义不大，可以直接进入年老代，根据实际应用效果，在这里设置此值为0。
+-XX:+UseConcMarkSweepGC 设置年老代为并发收集。CMS（ConcMarkSweepGC）收集的目标是尽量减少应用的暂停时间，减少Full GC发生的几率，利用和应用程序线程并发的垃圾回收线程来标记清除年老代内存，适用于应用中存在比较多的长生命周期对象的情况。
+
+### 内部集成构建服务器案例
+
+高性能数据处理的工具应用
+**服务器配置：**1 CPU, 4G MEM, JDK 1.6.X
+
+**参数方案：**
+
+-server -XX:PermSize=196m -XX:MaxPermSize=196m -Xmn320m -Xms768m -Xmx1024m
+
+**调优说明：**
+
+-XX:PermSize=196m -XX:MaxPermSize=196m 根据集成构建的特点，大规模的系统编译可能需要加载大量的Java类到内存中，所以预先分配好大量的持久代内存是高效和必要的。
+-Xmn320m 遵循年轻代大小为整个堆的3/8原则。
+-Xms768m -Xmx1024m 根据系统大致能够承受的堆内存大小设置即可。
+在64位服务器上运行应用程序，构建执行时，用 jmap -heap 11540 命令观察JVM堆内存状况如下：
+
+Attaching to process ID 11540, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 20.12-b01
+
+
+using thread-local object allocation.
+Parallel GC with 4 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio = 40
+   MaxHeapFreeRatio = 70
+   MaxHeapSize      = 1073741824 (1024.0MB)
+   NewSize          = 335544320 (320.0MB)
+   MaxNewSize       = 335544320 (320.0MB)
+   OldSize          = 5439488 (5.1875MB)
+   NewRatio         = 2
+   SurvivorRatio    = 8
+   PermSize         = 205520896 (196.0MB)
+   MaxPermSize      = 205520896 (196.0MB)
+
+Heap Usage:
+PS Young Generation
+Eden Space:
+   capacity = 255852544 (244.0MB)
+   used     = 101395504 (96.69828796386719MB)
+   free     = 154457040 (147.3017120361328MB)
+   39.63044588683081% used
+From Space:
+   capacity = 34144256 (32.5625MB)
+   used     = 33993968 (32.41917419433594MB)
+   free     = 150288 (0.1433258056640625MB)
+   99.55984397492803% used
+To Space:
+   capacity = 39845888 (38.0MB)
+   used     = 0 (0.0MB)
+   free     = 39845888 (38.0MB)
+   0.0% used
+PS Old Generation
+   capacity = 469762048 (448.0MB)
+   used     = 44347696 (42.29325866699219MB)
+   free     = 425414352 (405.7067413330078MB)
+   9.440459523882184% used
+PS Perm Generation
+   capacity = 205520896 (196.0MB)
+   used     = 85169496 (81.22396087646484MB)
+   free     = 120351400 (114.77603912353516MB)
+   41.440796365543285% used
+
+结果是比较健康的。
