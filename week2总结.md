@@ -164,7 +164,7 @@ VM 概要的数据有五个部分：
 >
 > ![image-20210318171647291](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210318171647291.png)
 
-标记清除算法（Mark and Sweep）
+## 标记清除算法（Mark and Sweep）
 
 - Marking(标记)：遍历所有的可达对象，并在本地内存（native）中分门别类记下
 - Sweeping(清除)：这一步保证了，不可达对象所占用的内存，在之后进行内存分配时可以重用
@@ -175,9 +175,72 @@ VM 概要的数据有五个部分：
 
 当然，在做了标记-清除后，还要进行**压缩**空间，使用STW（stop the world），让全世界停下来
 
+![image-20210319171811265](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319171811265.png)
+
+分带假设：大部分新生对象很快无用；存活较长时间的对象，可能存活更长时间
+
+![image-20210319172014270](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319172014270.png)
+
+内存池划分：不同类型对象不同区域，不同策略处理
+
+![image-20210319172117275](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319172117275.png)
+
+对象分配在新生代的Eden区，标记阶段Eden区存活的对象就会复制到存活区。（年轻代之间的对象复制采用‘复制’）
+
+由如下参数控制提升阈值：
+
+-XX:+MaxTenuringThreshold=15（对象经历多少代复制进入到老年代，默认15）
+
+老年代默认都是存活对象，采用移动方式:
+
+1. 标记所有通过GC roots可达的对象；
+2. 删除所有不可达的对象；
+3. 整理老年代空间中的内容，方法是将所有的存活对象复制，从老年代空间开始的地方依次存放。
+
+持久代/元数据区
+
+1.8之前：-XX:MaxPermSize=256m
+
+1.8之后：-XX:MaxMetaspaceSize=256m
+
+![image-20210319173342962](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319173342962.png)
+
+## 可以作为GC Roots的对象
+
+1. 当前正在执行的方法里的局部变量和输入参数
+2. 活动线程（Active threads）
+3. 所有类的静态字段（static field）
+4. JNI引用
+
+此阶段暂停时间，与堆内存大小，对象的总数没有直接关系，而是由存活对象（alive objects）的数量来决定，所以增加堆内存的大小并不会直接影响标记阶段占用的时间
+
+![image-20210319173734408](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319173734408.png)
+
+![image-20210319173917842](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210319173917842.png)
+
 
 
 # 串行GC/并行GC（Serial GC/Parallel GC）
+
+## 串行GC（Serial GC）/ParNewGC
+
+-XX:UseSerialGC 配置串行GC
+
+串行GC对年轻代使用mark-copy（标记-复制）算法，对老年代使用mark-sweep-compact（标记-清除-整理）算法
+
+两者都是单线程的垃圾收集器，不能进行并行处理，所以都会触发全线暂停（STW），停止所有的应用线程
+
+因此这种GC算法不能充分利用多核CPU。不管有多少CPU内核，JMVM在垃圾收集时都只能使用单个核心。
+
+CPU利用率高，暂停时间长，简单粗暴，就像老式的电脑，动不动就卡死。
+
+该选项只适合几百MB堆内存的JVM，而且时单核CPU时比较有用。
+
+-XX：+UseParNewGC改进版本的Serial GC,可以配合CMS使用
+
+https://blog.csdn.net/w903328615/article/details/108960758
+
+
 
 # CMS GC/G1 GC
 
