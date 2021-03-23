@@ -240,9 +240,78 @@ CPU利用率高，暂停时间长，简单粗暴，就像老式的电脑，动�
 
 https://blog.csdn.net/w903328615/article/details/108960758
 
+## 并行GC（Parallel GC）
 
+-XX: +UseParallelGC
+
+-XX: +UseParallelOldGC
+
+年轻代和老年代的垃圾回收都会触发STW事件。
+
+在年轻代使用标记-复制（mark-copy）算法，在老年代使用标记-清除-整理（mark-sweep-compact）算法。
+
+-XX: ParallelGCThreads=N来指定GC线程数，其默认值为CPU核心数。
+
+并行垃圾收集器适用于多核服务器，主要目标是增加吞吐量。因为对系统资源的有效使用。能达到更高的吞吐量：
+
+在GC期间，所有CPU内核都在并行清理垃圾，所以总暂停时间更短；
+
+在两次GC周期的间隔期，没有GC线程在运行，不会消耗任何系统资源
 
 # CMS GC/G1 GC
+
+## CMS GC(Mostly Concurrent Mark and Sweep Garbage Collector)
+
+-XX: UseConcMarkSweepGC
+
+其对年轻代采用并行STW方式的mark-copy（标记-复制）算法，对老年代主要使用并发mark-sweep(标记-清除)算法
+
+CMS GC的设计目标是避免在老年代垃圾收集时出现长时间的卡顿，主要通过两种手段来达成此目标：
+
+1. 不对老年代进行整理，而是使用空闲列表（free-list）来管理内存空间的回收；
+2. 在mark-and-sweep(标记-清除)阶段的大部分工作和应用线程一起并发执行。
+
+也就是说，在这些阶段并没有明显的应用线程暂停，但值得注意的是，它仍然和应用线程争抢CPU时间，默认情况下，CMS使用的并发线程数等于CPU核心数的1/4
+
+如果服务器是多核CPU，并且主要调优目标是降低GC停顿导致的系统延迟，那么使用CMS是个很明智的选择。进行老年代的并发回收时，可能会伴随这多次年轻代的minor GC。
+
+### CMS GC的六个阶段
+
+#### Initial Mark(初始标记)
+
+这个阶段伴随着STW暂停，初始标记的目标是标记所有的根对象，包括根对象直接引用的对象，以及被年轻代中所有存活对象所引用的对象（老年代单独回收）
+
+![image-20210323153530285](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210323153530285.png)
+
+#### Concurrent Mark(并发标记)
+
+在此阶段，CMS GC遍历老年代，标记所有存活对象，从前一阶段“Initial Mark”找到的根对象开始算起，“并发标记”阶段，就是与应用程序同时运行，不用暂停的阶段。
+
+![image-20210323153713129](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210323153713129.png)
+
+#### Concurrent Preclean（并发预清理）
+
+此阶段同样是与应用线程并发执行的，不需要停止应用线程。因为前一阶段【并发标记】与程序并发运行，可能有一些引用关系发生了变化，JVM会通过“Card（卡片）”的方式将发生了改变的区域标记为“脏”区，就是所谓的卡片标记（Card Marking）
+
+![image-20210323153937008](C:\Users\pwang6\AppData\Roaming\Typora\typora-user-images\image-20210323153937008.png)
+
+#### Final Remark（最终标记）
+
+最终标记阶段是此次GC事件中的第二次（也是最后一次）STW停顿，本阶段的目标是完成老年代中所有存活对象的标记，因为之前的预清理阶段是并发执行的，有可能GC线程跟不上应用程序的修改速度，所以需要一次STW暂停来处理各种复杂的情况。
+
+通常CMS会尝试在年轻代尽可能空的情况下执行Final Remark阶段，以免连续触发多次STW事件
+
+#### Concurrent Sweep（并发清除）
+
+此阶段与应用程序并发执行，不需要STW停顿，JVM在此阶段删除不再使用的对象，并回收他们占用的内存空间
+
+#### Concurrent Reset（并发重置）
+
+此阶段与应用程序并发执行，重置CMS算法相关的内部数据，为下一次GC循环做准备
+
+> CMS垃圾收集器在减少停顿时间上做了很多复杂而有用的工作，用于垃圾回收的并发线程执行的同时，并不需要暂停应用线程。当然，CMS也有一些缺点，其中最大的问题就是老年代内存碎片问题（因为不压缩），在某些情况下GC会造成不可预测的暂停时间，特别是堆内存较大的情况下。
+
+
 
 # ZGC/Shenandoah GC
 
